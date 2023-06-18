@@ -8,63 +8,61 @@ using namespace std;
 // } Driver Code Ends
 // User function template for C++
 
-// User function template for C++
-
 class Solution{
     public:
-    void movement(vector<string>&ans,string &temp,vector<vector<int>>&m,int n,int i,int j){
-        if(i>=n || j>=n ){
-            return;
-        }
-        if(i==n-1 && j==n-1){
+    void rat_in_maze(vector<vector<int>> &m, int n,vector<string>&ans,int row,int col,string &temp){
+        if(row==n-1 && col==n-1){
             ans.push_back(temp);
-            return;
-        }
-        if(i>0 && i<n && j>=0 && j<n && m[i-1][j]!=0){
-            temp.push_back('U');
             
-            m[i][j]=0;
-            movement(ans,temp,m,n,i-1,j);
-            temp.pop_back();
-            m[i][j]=1;
+            return;    
         }
-        if(i>=0 && i<n && j<n-1 && j>=0 && m[i][j+1]!=0){
-            temp.push_back('R');
-            m[i][j]=0;
-            movement(ans,temp,m,n,i,j+1);
-            temp.pop_back();
-            m[i][j]=1;
+        if(row>=n || col>=n || row<0 || col<0){
+            return ;
         }
-        if(i<n-1 && i>=0 && j<n && j>=0 && m[i+1][j]!=0){
+        if( row>0 && col>=0 && col<n && row<n && m[row-1][col]!=0){
+            temp.push_back('U');
+            m[row][col]=0;
+            rat_in_maze(m,n,ans,row-1,col,temp);
+            temp.pop_back();
+            m[row][col]=1;
+            
+        }
+        if(row<n-1 && col>=0 && col<n && row>=0 && m[row+1][col]!=0 ){
             temp.push_back('D');
-            m[i][j]=0;
-            movement(ans,temp,m,n,i+1,j);
+            m[row][col]=0;
+            rat_in_maze(m,n,ans,row+1,col,temp);
             temp.pop_back();
-            m[i][j]=1;
+            m[row][col]=1;
         }
-        if(i>=0 && i<n && j>0 && j<n && m[i][j-1]!=0){
+        if(col>0 && row>=0 && row<n && col<n && m[row][col-1]!=0){
             temp.push_back('L');
-            m[i][j]=0;
-            movement(ans,temp,m,n,i,j-1);
+            m[row][col]=0;
+            rat_in_maze(m,n,ans,row,col-1,temp);
             temp.pop_back();
-            m[i][j]=1;
+            m[row][col]=1;
+        }
+        if(col<n-1 && row>=0 && row<n && col>=0 && m[row][col+1]!=0 ){
+            temp.push_back('R');
+            m[row][col]=0;
+            rat_in_maze(m,n,ans,row,col+1,temp);
+            temp.pop_back();
+            m[row][col]=1;
         }
         
         
     }
     vector<string> findPath(vector<vector<int>> &m, int n) {
         // Your code goes here
-        vector<string>ans;
         
-        if(m[0][0]==0){
+        vector<string>ans;
+        if(m[0][0]==0 || m[n-1][n-1]==0){
             return ans;
         }
         string temp="";
-        movement(ans,temp,m,n,0,0);
+        rat_in_maze(m,n,ans,0,0,temp);
+        return ans;
     }
 };
-
-    
 
     
 
