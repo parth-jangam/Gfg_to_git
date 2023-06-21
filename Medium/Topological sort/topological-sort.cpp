@@ -5,83 +5,40 @@ using namespace std;
 // } Driver Code Ends
 class Solution
 {
-    
-    
-    
-    
-    
-
-private:
-void dfs(int node,int vis[],stack<int>&st,vector<int> adj[])
-{
-    vis[node]=1;
-    for(auto it:adj[node])
-    {
-        if(!vis[it])
-        dfs(it,vis,st,adj);
-    }
-    st.push(node);
-    
-}
- 
-public:
-vector<int> topoSort(int V, vector<int> adj[]) 
-{
-   int vis[V]={0};
-   stack<int>st;
-   for(int i=0;i<V;i++)
-   {
-       if(!vis[i])
-       {
-            dfs(i,vis,st,adj);    
-       }
-   }
-   vector<int>ans;
-   while(!st.empty())
-   {
-       ans.push_back(st.top());
-       st.pop();
-   }
-   return ans;
-}
+	public:
+	//Function to return list containing vertices in Topological order. 
+	void dfs(vector<int>&ans,unordered_map<int,bool>&mappe,int i,int V,vector<int> adj[]){
+	    mappe[i]=true;
+	    
+	    if(i==V){
+	        return;
+	    }
+	    for(auto x:adj[i]){
+	        if(!mappe[x]){
+	            mappe[x]=true;
+	            
+	            dfs(ans,mappe,x,V,adj);
+	           // ans.push_back(x);
+	            
+	        }
+	    }
+	    ans.push_back(i);
+	}
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    vector<int>ans;
+	    unordered_map<int,bool>mappe;
+	    for(int i=0;i<V;i++){
+	        if(!mappe[i]){
+	            dfs(ans,mappe,0,V,adj);
+	        }
+	    }
+	   // cout<<ans[0];
+	   reverse(ans.begin(),ans.end());
+	    return ans;
+	}
 };
-    
-    
-    
-    
-    
-// //     void dfs(int mappe[],stack<int>&s,int node,vector<int> adj[]){
-// // 	   // int node=i;
-// // 	    mappe[node]=1;
-// // 	    for(auto x:adj[node]){
-// // 	        if(!mappe[x]){
-// // 	            dfs(mappe,s,x,adj);
-// // 	        }
-// // 	    }
-// // 	    s.push(node);
-// // 	}
-// // 	public:
-// // 	//Function to return list containing vertices in Topological order. 
-	
-// // 	vector<int> topoSort(int V, vector<int> adj[]) 
-// // 	{
-// // 	    int mappe[V]={0};
-// // 	    stack<int>s;
-// // 	    for(int i=0;i<V;i++){
-// // 	        if(!mappe[i]){
-// // 	            dfs(mappe,s,i,adj);
-// // 	        }
-// // 	    }
-// // 	    vector<int>ans;
-// // 	    while(s.empty()){
-// // 	        int m=s.top();
-// // 	        s.pop();
-// // 	        ans.push_back(m);
-// // 	    }
-// // 	    return ans;
-// // 	    // code here
-// // 	}
-// };
 
 //{ Driver Code Starts.
 
