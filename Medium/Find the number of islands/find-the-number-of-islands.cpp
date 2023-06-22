@@ -6,48 +6,42 @@ using namespace std;
 class Solution {
   public:
     // Function to find the number of islands.
-    void bfs(vector<vector<char>>&grid,int row,int col ,vector<vector<int>>&mappe){
+    void bfs(vector<vector<char>>& grid,int i,int j,int n,int m){
+        grid[i][j]='2';
         queue<pair<int,int>>q;
-        q.push({row,col});
-        mappe[row][col]=1;
-        int n=grid.size();
-        int m=grid[0].size();
+        q.push({i,j});
         while(!q.empty()){
-            int r=q.front().first;
-            int c= q.front().second;
+            auto x=q.front();
             q.pop();
+            int r=x.first;
+            int c=x.second;
             for(int i=-1;i<=1;i++){
                 for(int j=-1;j<=1;j++){
-                    int nrow=r+i;
-                    int ncol=c+j;
-                    if(nrow<n && nrow>=0 &&ncol<m && ncol>=0 && mappe[nrow][ncol]==0 &&grid[nrow][ncol]=='1'){
-                        mappe[nrow][ncol]=1;
-                        q.push({nrow,ncol});
+                    int row=r+i;
+                    int col=c+j;
+                    if(row>=0 && row<n && col>=0 && col<m && grid[row][col]=='1'){
+                        q.push({row,col});
+                        grid[row][col]='2';
                     }
-                }   
+                }
             }
         }
     }
     int numIslands(vector<vector<char>>& grid) {
         // Code here
-        
-        // int count=0;
         int n=grid.size();
         int m=grid[0].size();
-        vector<int>adj[n];
         int count=0;
-        vector<vector<int>>mappe(n,vector<int>(m,0));
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(grid[i][j]=='1' && mappe[i][j]==0){
+                if(grid[i][j]=='1'){
                     count++;
-                    bfs(grid,i,j,mappe);
-                }
+                    bfs(grid,i,j,n,m);
+                }    
             }
         }
         return count;
     }
-    
 };
 
 //{ Driver Code Starts.
