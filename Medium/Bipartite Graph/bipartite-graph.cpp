@@ -5,23 +5,27 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
 public:
-    bool dfs(vector<int>adj[], int i,int color[],unordered_map<int,bool>&mappe){
-        for(auto x:adj[i]){
-            if(!mappe[x]){
-                mappe[x]=true;
-                color[x]=!color[i];
-                if(color[i] ==1){
-                    color[x]=0;
+    bool bfs(vector<int>adj[],int i,int color[]){
+        queue<int>q;
+        color[i]=1;
+        q.push(i);
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+            for(auto x:adj[node]){
+                if(color[x]==0){
+                    if(color[node]==1){
+                        color[x]=2;     
+                    }
+                    else{
+                        color[x]=1;
+                    }
+                    q.push(x);
                 }
                 else{
-                    color[x]=1;
-                }
-                dfs(adj,x,color,mappe);
-                
-            }
-            else{
-                if(color[x]==color[i]){
-                    return false;
+                    if(color[x]==color[node]){
+                        return false;
+                    }
                 }
             }
         }
@@ -29,14 +33,12 @@ public:
     }
 	bool isBipartite(int V, vector<int>adj[]){
 	    // Code here
-	    unordered_map<int,bool>mappe;
-	    int color[V];
-	    for(int i=0;i<V;i++)color[i]=1;
-	    
+	    int color[V]={0};
 	    for(int i=0;i<V;i++){
-	        
-	        if(!dfs(adj,i,color,mappe)){
-	            return false;
+	        if(color[i]==0){
+	            if(bfs(adj,i,color)==false){
+	                return false;
+	            }
 	        }
 	    }
 	    return true;
