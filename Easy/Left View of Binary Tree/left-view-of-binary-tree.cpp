@@ -151,7 +151,7 @@ int height(Node* root){
 vector<int> leftView(Node *root)
 {
    // Your code here
-   int h=height(root);
+    int h=height(root);
    vector<int>ans;
    
    
@@ -160,5 +160,4 @@ vector<int> leftView(Node *root)
        in_order(root,i,ans,flag);
    }
    return ans;
-   
 }
